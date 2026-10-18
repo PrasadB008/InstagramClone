@@ -1,0 +1,26 @@
+/**
+ * Formats a number into a human-readable string.
+ * Numbers below 1000 stay as they are.
+ * Numbers >= 1000 are formatted with K (thousands) or M (millions).
+ * 
+ * @param {number} n - The number to format
+ * @returns {string|number} The formatted number
+ * 
+ * @example
+ * formatCount(500) // 500
+ * formatCount(1234) // "1.2K"
+ * formatCount(1500000) // "1.5M"
+ */
+function formatCount(n) {
+  if (n < 1000) {
+    return n;
+  }
+
+  if (n < 1000000) {
+    return (n / 1000).toFixed(1) + 'K';
+  }
+
+  return (n / 1000000).toFixed(1) + 'M';
+}
+
+export default formatCount;
