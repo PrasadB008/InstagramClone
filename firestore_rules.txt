@@ -14,9 +14,17 @@ service cloud.firestore {
         allow write, update: if isAdmin();
 
     }
+    // A post caption may be at most 2200 characters (when present it must be a string).
+    // Writes that violate this are rejected with a permission-denied error.
+    function validCaption() {
+      return !('caption' in request.resource.data)
+        || (request.resource.data.caption is string
+            && request.resource.data.caption.size() <= 2200);
+    }
     match /posts/{user}/userPosts/{postId} {
       allow read: if true;
-      allow write: if request.auth.uid == user;
+      allow create, update: if request.auth.uid == user && validCaption();
+      allow delete: if request.auth.uid == user;
         allow write, update: if isAdmin();
       
     }
